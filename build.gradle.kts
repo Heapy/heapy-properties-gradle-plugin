@@ -10,6 +10,17 @@ repositories {
     jcenter()
 }
 
+dependencies {
+    implementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
+    runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+}
+
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+}
+
 gradlePlugin {
     plugins {
         create("propertiesPlugin") {

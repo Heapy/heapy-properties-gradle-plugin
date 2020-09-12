@@ -75,6 +75,6 @@ class PropertiesPlugin : Plugin<Project> {
     }
 
     companion object {
-        private const val PLUGIN_ID = "io.heapy.gradle.properties"
+        internal const val PLUGIN_ID = "io.heapy.gradle.properties"
     }
 }
