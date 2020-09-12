@@ -8,6 +8,12 @@ jdk:
   - openjdk8
   - openjdk11
 
+script:
+  - ./gradlew assemble
+  - ./gradlew check
+  - cd "${TRAVIS_BUILD_DIR}/manual-test/" && ./gradlew validate
+  - cd "${TRAVIS_BUILD_DIR}/manual-test-config/" && ./gradlew validate
+
 deploy:
   - provider: script
     script: ./gradlew publishPlugins -Pgradle.publish.key="${GRADLE_PUBLISH_KEY}" -Pgradle.publish.secret="${GRADLE_PUBLISH_SECRET}"

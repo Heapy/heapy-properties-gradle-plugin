@@ -4,23 +4,22 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.getByName
 import java.io.File
 import java.util.Properties
 
-class PropertiesPluginExtension {
-    val versionFile: File? = null
+open class PropertiesPluginExtension {
+    var versionFile: File? = null
 }
 
 class PropertiesPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val extension = project.extensions.create<PropertiesPluginExtension>("props")
-
-        setVersion(project, extension)
+        setVersion(project)
         setProperties(project)
     }
 
     internal fun setProperties(project: Project) {
-        projectList(project).reversed().forEach {
+        parentProjects(project).reversed().forEach {
             val file = it.file("local.properties")
             if (file.exists()) {
                 val props = file.loadToProps()
@@ -31,7 +30,7 @@ class PropertiesPlugin : Plugin<Project> {
         }
     }
 
-    internal fun projectList(project: Project): List<Project> {
+    internal fun parentProjects(project: Project): List<Project> {
         val projects = mutableListOf<Project>()
         var parent: Project? = project
 
@@ -43,15 +42,28 @@ class PropertiesPlugin : Plugin<Project> {
         return projects.toList()
     }
 
-    internal fun setVersion(
-        project: Project,
-        extension: PropertiesPluginExtension
-    ) {
-        project.afterEvaluate {
-            val propsFile = extension.versionFile
-                ?: rootProject.rootDir.resolve("build.properties")
+    internal fun setVersion(project: Project) {
+        project.extensions.create<PropertiesPluginExtension>("props")
 
-            version = propsFile.loadToProps().getProperty("version")
+        project.afterEvaluate {
+            val versionFile = parentProjects(project)
+                .filter { it.pluginManager.hasPlugin(PLUGIN_ID) }
+                .map { it.extensions.getByName<PropertiesPluginExtension>("props") }
+                .mapNotNull { it.versionFile }
+                .firstOrNull()
+
+            val propsFile = versionFile
+                ?: project.rootProject.rootDir.resolve("build.properties")
+
+            if (propsFile.exists()) {
+                val buildVersion = propsFile.loadToProps().getProperty("version")
+                version = buildVersion
+                subprojects {
+                    version = buildVersion
+                }
+            } else {
+                logger.error("Version file ($propsFile) is not found")
+            }
         }
     }
 
@@ -60,5 +72,9 @@ class PropertiesPlugin : Plugin<Project> {
     ): Properties {
         this.reader().use(properties::load)
         return properties
+    }
+
+    companion object {
+        private const val PLUGIN_ID = "io.heapy.gradle.properties"
     }
 }
