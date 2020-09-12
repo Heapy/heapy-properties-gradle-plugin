@@ -27,7 +27,7 @@ gradlePlugin {
 
 pluginBundle {
     website = "https://github.com/Heapy/heapy-properties-gradle-plugin"
-    vcsUrl = "git@github.com:Heapy/heapy-properties-gradle-plugin.git"
+    vcsUrl = "https://github.com/Heapy/heapy-properties-gradle-plugin"
     tags = listOf("kotlin", "properties", "local", "build")
 }
 
