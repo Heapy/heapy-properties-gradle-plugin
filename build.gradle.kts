@@ -11,8 +11,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
-    runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }
 
 tasks {
@@ -41,5 +41,3 @@ pluginBundle {
     vcsUrl = "https://github.com/Heapy/heapy-properties-gradle-plugin"
     tags = listOf("kotlin", "properties", "local", "build")
 }
-
-
