@@ -7,6 +7,7 @@ published_versions=(
   "1.0.0"
   "1.1.0"
   "1.1.1"
+  "1.1.2"
 )
 
 match=$(echo "${published_versions[@]:0}" | grep -o "${version}");

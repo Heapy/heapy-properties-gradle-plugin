@@ -1,7 +1,7 @@
 plugins {
     `kotlin-dsl`
     id("com.gradle.plugin-publish").version("0.12.0")
-    id("io.heapy.gradle.properties").version("1.1.1")
+    id("io.heapy.gradle.properties").version("1.1.2")
     id("java-gradle-plugin")
 }
 
