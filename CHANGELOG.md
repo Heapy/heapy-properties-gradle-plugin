@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+- [#2](https://github.com/Heapy/heapy-properties-gradle-plugin/pull/2) Tighten the scopes of test-only dependencies
+
 ## 1.1.1
 
 - Unit tests added
